@@ -2,12 +2,33 @@
 import React, { useState } from 'react';
 import { BsFilter } from 'react-icons/bs';
 import classNames from 'classnames';
+import { useForm } from 'react-hook-form';
+import useUserStore from '@/store/userStore';
+import toast from 'react-hot-toast';
 
-type Props = {};
+type FilterData = {
+  subscription: boolean;
+  burner: boolean;
+  cardholder: string;
+};
 
-const Filter = (props: Props) => {
+const Filter = () => {
   const [filterDropdownOpen, setFilterDropdownOpen] = useState(false);
   const toggleFilterDropdown = () => setFilterDropdownOpen(!filterDropdownOpen);
+  const [setUserId] = useUserStore((state) => [state.setUserId]);
+
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FilterData>();
+
+  const onSubmit = handleSubmit((data) => {
+    setUserId(parseInt(data.cardholder));
+    toggleFilterDropdown();
+    toast.success('User set to: User ' + data.cardholder);
+  });
 
   return (
     <div className="relative">
@@ -24,7 +45,10 @@ const Filter = (props: Props) => {
 
       {/* Filter Dropdown Menu */}
       {filterDropdownOpen && (
-        <div className="absolute top-12 right-0 w-96 bg-white shadow-lg rounded-lg py-2 pb-6 px-4">
+        <form
+          onSubmit={onSubmit}
+          className="absolute top-12 right-0 w-80 sm:w-96 bg-white shadow-lg rounded-lg py-2 pb-6 px-4"
+        >
           <div className="border-b-2 py-2 text-black">
             <h4 className="px-4 font-semibold">Filters</h4>
           </div>
@@ -34,12 +58,16 @@ const Filter = (props: Props) => {
             <p>Type</p>
             <div className="flex space-x-4">
               <div className="flex items-center space-x-2">
-                <input id="subscription" type="checkbox" />
+                <input
+                  {...register('subscription')}
+                  id="subscription"
+                  type="checkbox"
+                />
                 <label htmlFor="subscription">Subscription</label>
               </div>
 
               <div className="flex items-center space-x-2">
-                <input id="burner" type="checkbox" />
+                <input {...register('burner')} id="burner" type="checkbox" />
                 <label htmlFor="burner">Burner</label>
               </div>
             </div>
@@ -48,12 +76,14 @@ const Filter = (props: Props) => {
           <div className="p-4 space-y-2 w-full">
             <p>Cardholder</p>
             <select
-              name="cardholder"
               id="cardholder"
               placeholder="Select Cardholder"
               className="w-full px-4 py-2 bg-gray-100 rounded-md"
+              {...register('cardholder')}
             >
-              <option value={1}>User 1</option>
+              <option defaultChecked value={1}>
+                User 1
+              </option>
               <option value={2}>User 2</option>
             </select>
           </div>
@@ -66,7 +96,7 @@ const Filter = (props: Props) => {
               Clear
             </button>
           </div>
-        </div>
+        </form>
       )}
     </div>
   );

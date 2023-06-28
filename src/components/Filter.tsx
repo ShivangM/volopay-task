@@ -15,12 +15,15 @@ type FilterData = {
 const Filter = () => {
   const [filterDropdownOpen, setFilterDropdownOpen] = useState(false);
   const toggleFilterDropdown = () => setFilterDropdownOpen(!filterDropdownOpen);
-  const [setUserId] = useUserStore((state) => [state.setUserId]);
+  const [setUserId, userId] = useUserStore((state) => [
+    state.setUserId,
+    state.userId,
+  ]);
 
   const {
     register,
-    setValue,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FilterData>();
 
@@ -29,6 +32,11 @@ const Filter = () => {
     toggleFilterDropdown();
     toast.success('User set to: User ' + data.cardholder);
   });
+
+  const handleClearFilter = () => {
+    reset();
+    toast.success('Filter Cleared!');
+  };
 
   return (
     <div className="relative">
@@ -81,10 +89,12 @@ const Filter = () => {
               className="w-full px-4 py-2 bg-gray-100 rounded-md"
               {...register('cardholder')}
             >
-              <option defaultChecked value={1}>
+              <option disabled={userId === 1} defaultChecked value={1}>
                 User 1
               </option>
-              <option value={2}>User 2</option>
+              <option disabled={userId === 2} value={2}>
+                User 2
+              </option>
             </select>
           </div>
 
@@ -92,7 +102,11 @@ const Filter = () => {
             <button className="px-6 py-2 rounded-lg bg-rose-600 text-white w-full">
               Apply
             </button>
-            <button className="px-6 py-2 rounded-lg bg-gray-100 w-full">
+            <button
+              type="button"
+              onClick={handleClearFilter}
+              className="px-6 py-2 rounded-lg bg-gray-100 w-full"
+            >
               Clear
             </button>
           </div>

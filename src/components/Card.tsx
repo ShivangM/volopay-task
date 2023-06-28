@@ -1,11 +1,11 @@
-import { Card } from '@/types/cards';
+import { CardType } from '@/types/cards';
 import classNames from 'classnames';
 import React from 'react';
 import { BsFire } from 'react-icons/bs';
 import { LuRefreshCw } from 'react-icons/lu';
 
 type Props = {
-  card: Card;
+  card: CardType;
 };
 
 const Card = ({ card }: Props) => {
@@ -15,7 +15,6 @@ const Card = ({ card }: Props) => {
     card_type,
     limit,
     name,
-    owner_id,
     spent,
     status,
     expiry,

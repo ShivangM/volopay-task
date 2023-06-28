@@ -1,4 +1,4 @@
-export type Card = {
+export type CardType = {
   name: string;
   budget_name: string;
   owner_id: number;

@@ -6,7 +6,7 @@ import Card from '@/components/Card';
 
 export default function Home() {
   return (
-    <main className="py-4 px-10 space-y-8">
+    <main className="py-4 px-10 space-y-8 max-w-7xl mx-auto">
       <div className="w-full flex items-center justify-end">
         <div className="flex items-center space-x-4 text-gray-400 cursor-pointer">
           <FiSearch />
@@ -17,7 +17,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {data.map((card, idx) => {
           return <Card card={card} key={idx} />;
         })}

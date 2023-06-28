@@ -7,12 +7,18 @@ import useNavigationStore from '@/store/navigationStore';
 import { useEffect, useState } from 'react';
 import { CardType } from '@/types/cards';
 import Filter from '@/components/Filter';
+import useFilterStore from '@/store/filterStore';
 
 export default function Home() {
   const [userId] = useUserStore((state) => [state.userId]);
   const [selectedTab] = useNavigationStore((state) => [state.selectedTab]);
 
-  const [cards, setCards] = useState<CardType[] | undefined>();
+  const [cards, setCards] = useState<CardType[] | undefined>(data);
+
+  const [subscription, burner] = useFilterStore((state) => [
+    state.subscription,
+    state.burner,
+  ]);
 
   useEffect(() => {
     if (selectedTab === 0) {
@@ -23,6 +29,32 @@ export default function Home() {
       setCards(data.filter((card) => card.status === 'blocked'));
     }
   }, [selectedTab, userId]);
+
+  useEffect(() => {
+    if (subscription) {
+      setCards((prev) => {
+        if (prev) {
+          return prev.filter((card) => card.card_type !== 'subscription');
+        }
+      });
+    }
+  }, [subscription]);
+
+  useEffect(() => {
+    if (burner) {
+      setCards((prev) => {
+        if (prev) {
+          return prev.filter((card) => card.card_type !== 'burner');
+        }
+      });
+    }
+  }, [burner]);
+
+  useEffect(() => {
+    if (!subscription && !burner) {
+      setCards(data);
+    }
+  }, [subscription, burner]);
 
   return (
     <main className="py-4 px-4 pb-10 sm:px-10 space-y-8 max-w-7xl mx-auto">

@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { useForm } from 'react-hook-form';
 import useUserStore from '@/store/userStore';
 import toast from 'react-hot-toast';
+import useFilterStore from '@/store/filterStore';
 
 type FilterData = {
   subscription: boolean;
@@ -20,6 +21,11 @@ const Filter = () => {
     state.userId,
   ]);
 
+  const [setSubscription, setBurner] = useFilterStore((state) => [
+    state.setSubscription,
+    state.setBurner,
+  ]);
+
   const {
     register,
     handleSubmit,
@@ -29,12 +35,16 @@ const Filter = () => {
 
   const onSubmit = handleSubmit((data) => {
     setUserId(parseInt(data.cardholder));
+    setSubscription(data.subscription);
+    setBurner(data.burner);
     toggleFilterDropdown();
     toast.success('User set to: User ' + data.cardholder);
   });
 
   const handleClearFilter = () => {
     reset();
+    setSubscription(false);
+    setBurner(false);
     toast.success('Filter Cleared!');
   };
 

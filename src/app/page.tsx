@@ -6,7 +6,7 @@ import Card from '@/components/Card';
 
 export default function Home() {
   return (
-    <main className="py-4 px-10 space-y-8 max-w-7xl mx-auto">
+    <main className="py-4 px-4 pb-10 sm:px-10 space-y-8 max-w-7xl mx-auto">
       <div className="w-full flex items-center justify-end">
         <div className="flex items-center space-x-4 text-gray-400 cursor-pointer">
           <FiSearch />

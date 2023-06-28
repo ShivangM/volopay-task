@@ -8,15 +8,15 @@ interface UserState {
 
 const useUserStore = create<UserState>()(
   devtools(
-    persist(
-      (set) => ({
-        userId: 1,
-        setUserId: (id) => set(() => ({ userId: id })),
-      }),
-      {
-        name: 'user-storage',
-      }
-    )
+    // persist(
+    (set) => ({
+      userId: 1,
+      setUserId: (id) => set(() => ({ userId: id })),
+    })
+    //   {
+    //     name: 'user-storage',
+    //   }
+    // )
   )
 );
 

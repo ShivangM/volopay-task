@@ -8,15 +8,15 @@ interface NavigationState {
 
 const useNavigationStore = create<NavigationState>()(
   devtools(
-    persist(
-      (set) => ({
-        selectedTab: 0,
-        setSelectedTab: (tab) => set(() => ({ selectedTab: tab })),
-      }),
-      {
-        name: 'navigation-storage',
-      }
-    )
+    // persist(
+    (set) => ({
+      selectedTab: 0,
+      setSelectedTab: (tab) => set(() => ({ selectedTab: tab })),
+    })
+    //   {
+    //     name: 'navigation-storage',
+    //   }
+    // )
   )
 );
 
